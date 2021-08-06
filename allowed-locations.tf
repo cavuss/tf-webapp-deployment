@@ -1,10 +1,4 @@
-# resource "azurerm_policy_assignment" "allowedzones" {
-#     name = "allowed-locations"
-#     scope = var.cust_scope
-#     policy_definition_id = "/subscriptions/9c75dde5-f6c1-4b73-9be2-c2645dc4e4f2/providers/Microsoft.Authorization/policyAssignments/cfca0d61cb324bb9b60c12a1"
-#     description = "Restrict the locations your organization can specify when deploying resources"
-#     display_name = "Allowed locations"
-# }
+
 resource "azurerm_policy_definition" "allowedzones" {
   name         = "allowed-zones"
   policy_type  = "Custom"
@@ -53,10 +47,13 @@ PARAMETERS
 
 resource "azurerm_policy_assignment" "allowedzones" {
   name                 = "allowed-zone-assignment"
-  scope                = var.sub_scope
+  scope                = azurerm_resource_group.vm_group.id
   policy_definition_id = azurerm_policy_definition.allowedzones.id
   description          = "Policy Assignment created via an Acceptance Test"
   display_name         = "Allowed Locations Policy"
+  # depends_on = [
+  #   azurerm_resource_group.vm_group
+  # ]
 
   metadata = <<METADATA
     {
