@@ -16,7 +16,7 @@ provider "azurerm" {
 # Create resource group
 resource "azurerm_resource_group" "vm_group" {
   name     = "VirtualMachineGroup"
-  location = "UK South"
+  location = var.location
 }
 
 # Create virtual network
@@ -24,7 +24,7 @@ resource "azurerm_virtual_network" "vm_network" {
   name                = "VirtualMachineNetwork"
   address_space       = ["10.0.0.0/22"]
   resource_group_name = azurerm_resource_group.vm_group.name
-  location            = "UK South"
+  location            = var.location
 }
 
 # Create network subnet
@@ -38,7 +38,7 @@ resource "azurerm_subnet" "vm_subnet" {
 # Create network adapter
 resource "azurerm_network_interface" "vm_network_interface" {
   name                = "VirtualMachineNetworkInterface"
-  location            = "UK South"
+  location            = var.location
   resource_group_name = azurerm_resource_group.vm_group.name
 
   ip_configuration {
@@ -52,7 +52,7 @@ resource "azurerm_network_interface" "vm_network_interface" {
 resource "azurerm_windows_virtual_machine" "virtual_machine" {
   name                  = "VM"
   resource_group_name   = azurerm_resource_group.vm_group.name
-  location              = "UK South"
+  location              = var.location
   size                  = "Standard_B1s"
   admin_username        = "serkan"
   admin_password        = "sdfhq48SDFdf224sf"
